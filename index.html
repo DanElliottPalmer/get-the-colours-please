@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>  
+		<meta charset="utf-8">
+		<title>get the colours please</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<style type="text/css">
+
+			html, body {
+				font-family: Arial, sans-serif;
+				height: 100%;
+				margin: 0;
+			}
+
+			.gtc-wrapper {
+				display: table;
+				height: 100%;
+				position: relative;
+				width: 100%;
+			}
+			.gtc-wrapper__col {
+				background-color: #E2E2E2;
+				display: table-cell;
+				position: relative;
+				width: 50%;
+				vertical-align: top;
+			}
+
+			.gtc-textarea {
+				bottom: 0;
+				font-family: Courier New, Courier, monospace;
+				font-size: 14px;
+				position: absolute;
+				resize: none;
+				top: 0;
+				width: 100%;
+			}
+
+			.gtc-colour-list__wrapper {
+				height: 100%;
+				overflow: auto;
+				width: 100%;
+			}
+			.gtc-colour-list {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+			.gtc-colour-list__item {
+				padding: 10px;
+			}
+
+		</style>
+
+	</head>
+	<body>
+		
+		<div class="gtc-wrapper">
+
+			<div class="gtc-wrapper__col">
+				<textarea class="gtc-textarea" placeholder="get the colours from here please" id="txtSource"></textarea>
+			</div>
+
+			<div class="gtc-wrapper__col">
+				
+				<div class="gtc-colour-list__wrapper">
+					<ul class="gtc-colour-list" id="listColours">
+						<li class="gtc-colour-list__item">show the colours here please</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<script type="text/javascript">
+
+			addEvent( document.getElementById('txtSource'), 'change', scanForColours );
+			addEvent( document.getElementById('txtSource'), 'keyup', scanForColours );
+
+			function addEvent( el, type, fn ){
+				if( document.addEventListener ) return el.addEventListener( type, fn );
+				return el.attachEvent( 'on' + type, fn );
+			}
+
+			function clearColours(){
+				document.getElementById('listColours').innerHTML = createListItem( 'show the colours here please', null );
+			}
+
+			function createListItem( label, colour ){
+				return '<li class="gtc-colour-list__item" ' + ( colour !== null ? 'style="background-color: ' + colour + ';"' : '' ) + '>' + label + '</li>';
+			}
+
+			function displayColours( colourList ){
+				console.log( colourList );
+				var i = -1;
+				var len = colourList.length;
+				var html = '';
+				while( ++i < len ){
+					html += createListItem( colourList[ i ], colourList[ i ] );
+				}
+				document.getElementById('listColours').innerHTML = html;
+			}
+
+			function scanForColours(){
+
+				var source = document.getElementById('txtSource').value;
+
+				if( source === "" ){
+					clearColours();
+					return;
+				}
+
+				var colours = [];
+				var colour;
+				var reHex = /(?:\s*)(\#(?:[0-9a-f]{6}|[0-9a-f]{3}))(?:[^a-z0-9])/gi;
+				while( ( colour = reHex.exec( source ) ) ){
+					colours.push( colour[1] );
+				}
+
+				clearColours();
+				if( colours.length === 0 ){
+					return;
+				}
+				displayColours( colours );
+
+			}
+
+		</script>
+
+	</body>
+</html>
