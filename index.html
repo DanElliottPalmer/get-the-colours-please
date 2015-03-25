@@ -117,18 +117,21 @@
 
 				var colours = [];
 				var coloursKey = {};
+				var colourResult;
 				var colour;
 				// CSS Present colours
-				while( ( colour = RE_CSS_PRESET_COLOURS.exec( source ) ) ){
-					if( coloursKey.hasOwnProperty( colour[1] ) ) continue;
-					coloursKey[ colour[1] ] = true;
-					colours.push( colour[1] );
+				while( ( colourResult = RE_CSS_PRESET_COLOURS.exec( source ) ) ){
+					colour = colourResult[1].toUpperCase();
+					if( coloursKey.hasOwnProperty( colour ) ) continue;
+					coloursKey[ colour ] = true;
+					colours.push( colour );
 				}
 				// Hex colours
-				while( ( colour = RE_HEX_COLOURS.exec( source ) ) ){
-					if( coloursKey.hasOwnProperty( colour[1] ) ) continue;
-					coloursKey[ colour[1] ] = true;
-					colours.push( colour[1] );
+				while( ( colourResult = RE_HEX_COLOURS.exec( source ) ) ){
+					colour = colourResult[1].toUpperCase();
+					if( coloursKey.hasOwnProperty( colour ) ) continue;
+					coloursKey[ colour ] = true;
+					colours.push( colour );
 				}
 
 				coloursKey = null;
