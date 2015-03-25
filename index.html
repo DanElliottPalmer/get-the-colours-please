@@ -116,16 +116,22 @@
 				}
 
 				var colours = [];
+				var coloursKey = {};
 				var colour;
 				// CSS Present colours
 				while( ( colour = RE_CSS_PRESET_COLOURS.exec( source ) ) ){
+					if( coloursKey.hasOwnProperty( colour[1] ) ) continue;
+					coloursKey[ colour[1] ] = true;
 					colours.push( colour[1] );
 				}
 				// Hex colours
 				while( ( colour = RE_HEX_COLOURS.exec( source ) ) ){
+					if( coloursKey.hasOwnProperty( colour[1] ) ) continue;
+					coloursKey[ colour[1] ] = true;
 					colours.push( colour[1] );
 				}
 
+				coloursKey = null;
 				clearColours();
 				if( colours.length === 0 ){
 					return;
