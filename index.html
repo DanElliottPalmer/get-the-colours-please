@@ -81,6 +81,8 @@
 			var RE_HEX_COLOURS = /(?:\s*)(\#(?:[0-9a-f]{6}|[0-9a-f]{3}))(?:[^a-z0-9])/gi;
 			// RGB regex following this spec http://www.w3.org/TR/css3-color/#rgb-color
 			var RE_RGB_COLOURS = /(rgb\((?:\s*(?:[\-]{0,1}[\d]+[%]{0,1})[\s]*[,]{1}[\s]*){2}(?:[\-]{0,1}[\d]+[%]{0,1})\))/gi;
+			// RGBA regex following this spec http://www.w3.org/TR/css3-color/#rgba-color
+			var RE_RGBA_COLOURS = /(rgba\((?:\s*(?:[\-]{0,1}[\d]+[%]{0,1})[\s]*[,]{1}[\s]*){3}(?:\-?[\d]?\.[\d]*|\-?[\d]{1}){1}[\s]*\))/gi;
 
 			addEvent( document.getElementById('txtSource'), 'change', scanForColours );
 			addEvent( document.getElementById('txtSource'), 'keyup', scanForColours );
@@ -138,6 +140,13 @@
 				}
 				// RGB colours
 				while( ( colourResult = RE_RGB_COLOURS.exec( source ) ) ){
+					colour = colourResult[1].toUpperCase();
+					if( coloursKey.hasOwnProperty( colour ) ) continue;
+					coloursKey[ colour ] = true;
+					colours.push( colour );
+				}
+				// RGBA colours
+				while( ( colourResult = RE_RGBA_COLOURS.exec( source ) ) ){
 					colour = colourResult[1].toUpperCase();
 					if( coloursKey.hasOwnProperty( colour ) ) continue;
 					coloursKey[ colour ] = true;
