@@ -79,6 +79,7 @@
 			// Preset colours following this spec http://www.w3.org/TR/css3-color/#svg-color
 			var RE_CSS_PRESET_COLOURS = /(YellowGreen|Yellow|WhiteSmoke|White|Wheat|Violet|Turquoise|Tomato|Thistle|Teal|Tan|SteelBlue|SpringGreen|Snow|SlateGray|SlateBlue|SkyBlue|Silver|Sienna|SeaShell|SeaGreen|SandyBrown|Salmon|SaddleBrown|RoyalBlue|RosyBrown|Red|RebeccaPurple|Purple|PowderBlue|Plum|Pink|Peru|PeachPuff|PapayaWhip|PaleVioletRed|PaleTurquoise|PaleGreen|PaleGoldenRod|Orchid|OrangeRed|Orange|OliveDrab|Olive|OldLace|Navy|NavajoWhite|Moccasin|MistyRose|MintCream|MidnightBlue|MediumVioletRed|MediumTurquoise|MediumSpringGreen|MediumSlateBlue|MediumSeaGreen|MediumPurple|MediumOrchid|MediumBlue|MediumAquaMarine|Maroon|Magenta|Linen|LimeGreen|Lime|LightYellow|LightSteelBlue|LightSlateGray|LightSkyBlue|LightSeaGreen|LightSalmon|LightPink|LightGreen|LightGray|LightGoldenRodYellow|LightCyan|LightCoral|LightBlue|LemonChiffon|LawnGreen|LavenderBlush|Lavender|Khaki|Ivory|Indigo |IndianRed |HotPink|HoneyDew|GreenYellow|Green|Gray|GoldenRod|Gold|GhostWhite|Gainsboro|Fuchsia|ForestGreen|FloralWhite|FireBrick|DodgerBlue|DimGray|DeepSkyBlue|DeepPink|DarkViolet|DarkTurquoise|DarkSlateGray|DarkSlateBlue|DarkSeaGreen|DarkSalmon|DarkRed|DarkOrchid|DarkOrange|DarkOliveGreen|DarkMagenta|DarkKhaki|DarkGreen|DarkGray|DarkGoldenRod|DarkCyan|DarkBlue|Cyan|Crimson|Cornsilk|CornflowerBlue|Coral|Chocolate|Chartreuse|CadetBlue|BurlyWood|Brown|BlueViolet|Blue|BlanchedAlmond|Black|Bisque|Beige|Azure|Aquamarine|Aqua|AntiqueWhite|AliceBlue)/gi;
 			var RE_HEX_COLOURS = /(?:\s*)(\#(?:[0-9a-f]{6}|[0-9a-f]{3}))(?:[^a-z0-9])/gi;
+			var RE_HEX_COLOURS_NUMS = /[\s]*0x([a-f0-9]{6})[\s]*/gi;
 			// RGB regex following this spec http://www.w3.org/TR/css3-color/#rgb-color
 			var RE_RGB_COLOURS = /(rgb\((?:\s*(?:[\-]{0,1}[\d]+[%]{0,1})[\s]*[,]{1}[\s]*){2}(?:[\-]{0,1}[\d]+[%]{0,1})\))/gi;
 			// RGBA regex following this spec http://www.w3.org/TR/css3-color/#rgba-color
@@ -137,6 +138,12 @@
 				// Hex colours
 				while( ( colourResult = RE_HEX_COLOURS.exec( source ) ) ){
 					colour = colourResult[1].toUpperCase();
+					if( coloursKey.hasOwnProperty( colour ) ) continue;
+					coloursKey[ colour ] = true;
+					colours.push( colour );
+				}
+				while( ( colourResult = RE_HEX_COLOURS_NUMS.exec( source ) ) ){
+					colour = "#" + colourResult[1].toUpperCase();
 					if( coloursKey.hasOwnProperty( colour ) ) continue;
 					coloursKey[ colour ] = true;
 					colours.push( colour );
